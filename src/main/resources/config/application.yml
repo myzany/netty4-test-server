@@ -1,0 +1,45 @@
+# This file will be automatically loads on spring boot application.
+# http://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html
+
+# To do the same thing with properties files you can use "application-${profile}.properties" to specify profile-specific values.
+# http://docs.spring.io/spring-boot/docs/current/reference/html/howto-properties-and-configuration.html
+
+# ./myapp start --spring.profiles.active=prod
+
+spring.profiles.active: local
+
+# =============================================================================
+# Application default custom configuration
+# =============================================================================
+
+app:
+  name: netty4-test-server
+  full-name: Netty4 Test Server
+  version: 0.0.1-RELEASE
+  base-package: kr.zany.sample.netty4.server
+
+spring:
+  resources:
+    cache-period: 3600
+  main:
+    banner-mode: "off"
+  application:
+    name: ${app.name}
+
+server:
+  port: -1
+  context-path: /${app.name}
+  tomcat:
+    uri-encoding: UTF-8
+
+netty4.server:
+  port: 10038
+  backlog-size: 128
+  send-message: "Message Received."
+  send-delay-millis: 0
+  disconnect-after-complete: true
+  disconnect-delay-millis: 10
+
+logging:
+  config: classpath:config/logback-local.xml
+  file: ./tmp/${app.name}.log

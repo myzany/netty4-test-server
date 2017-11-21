@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- system environment : export LOGBACK_CONFIG_FILE_LOCATION=/tmp/logback.conf -->
+    <!-- java jvm argument  : -Dlogback.configurationFile=${LOGBACK_CONFIG_FILE_LOCATION} -->
+
+    <property name="FILE_LOG_THRESHOLD" value="INFO"/>
+    <property name="CONSOLE_LOG_THRESHOLD" value="WARN"/>
+
+    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
+    <conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter" />
+
+    
+
+    <!-- ================================================================== -->
+    <!-- FILE LOGGING CONFIGURATION -->
+    <!-- ================================================================== -->
+
+    <property name="LOG_FILE" value="${LOG_FILE:-${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}/}netty4-test-server.log}"/>
+    <property name="FILE_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${PID:- } [%t] --- %-40.40logger{39} : %m%n%wex"/>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>${FILE_LOG_THRESHOLD}</level>
+        </filter>
+        <file>${LOG_FILE}</file>
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <fileNamePattern>${LOG_FILE}.%i</fileNamePattern>
+        </rollingPolicy>
+        <triggeringPolicy
+                class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <MaxFileSize>10MB</MaxFileSize>
+        </triggeringPolicy>
+    </appender>
+
+
+
+
+    <!-- ================================================================== -->
+    <!-- CONSOLE LOGGING CONFIGURATION -->
+    <!-- ================================================================== -->
+
+    <property name="CONSOLE_LOG_PATTERN" value="%clr(%d{HHmmss.SSS}){faint} %clr(%5p) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t{14}]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n%wex"/>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>${CONSOLE_LOG_THRESHOLD}</level>
+        </filter>
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="DEBUG_LEVEL_REMAPPER" class="org.springframework.boot.logging.logback.LevelRemappingAppender">
+        <destinationLogger>org.springframework.boot</destinationLogger>
+    </appender>
+
+
+    
+    
+    <!-- ================================================================== -->
+    <!-- ROOT CONFIGURATION -->
+    <!-- ================================================================== -->
+
+    <root level="TRACE">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="FILE" />
+    </root>
+
+
+
+
+
+
+
+    <!-- ================================================================== -->
+    <!-- CLASS LEVEL CUSTOM CONFIGURATION -->
+    <!-- ================================================================== -->
+
+    <logger name="org.springframework" level="DEBUG"/>
+    <logger name="org.apache.activemq.thread.PooledTaskRunner" level="INFO"/>
+
+    <!-- MyBatis Dao -->
+    <logger name="org.mybatis.spring.SqlSessionUtils" level="INFO"/>
+    <logger name="org.mybatis.spring.transaction.SpringManagedTransaction" level="INFO"/>
+
+    <!-- Spring boot defaults -->
+    <logger name="org.hibernate.validator.internal.util.Version" level="WARN"/>
+    <logger name="org.apache.coyote.http11.Http11NioProtocol" level="WARN"/>
+    <logger name="org.crsh.plugin" level="WARN"/>
+    <logger name="org.apache.tomcat.util.net.NioSelectorPool" level="WARN"/>
+    <logger name="org.apache.catalina.startup.DigesterFactory" level="ERROR"/>
+    <logger name="org.apache.catalina.util.LifecycleBase" level="ERROR"/>
+    <logger name="org.eclipse.jetty.util.component.AbstractLifeCycle" level="ERROR"/>
+    <logger name="org.thymeleaf" additivity="false">
+        <appender-ref ref="DEBUG_LEVEL_REMAPPER"/>
+    </logger>
+    
+    
+    <!-- Custom Classes -->
+
+</configuration>
