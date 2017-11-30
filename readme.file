@@ -3,9 +3,23 @@
 ①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮
 
 -----------------------------------------------
-● maven command arguments
+● maven build
 -----------------------------------------------
--U -DskipTests spring-boot:run
+mvn -U -DskipTests clean package
+mvn -U -DskipTests spring-boot:run
+
+-----------------------------------------------
+● gradle build
+-----------------------------------------------
+● clean build
+gradle --console=plain clean build -x test
+
+● project report (project-report plugin) : projectReport task 를 수행하면 모두 리포팅됨.
+https://docs.gradle.org/current/userguide/project_reports_plugin.html
+gradle --console=plain clean projectReport
+
+● 의존성 트리 보기 (project report 에도 나옴)
+gradle clean dependencies --configuration runtime
 
 -----------------------------------------------
 ● jvm arguments

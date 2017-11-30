@@ -1,0 +1,75 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'project-report'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+group = 'kr.zany.sample.netty4.server'
+version = '0.0.1-SNAPSHOT'
+
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.8.RELEASE")
+	}
+}
+
+// ------------------------------------------------------
+// ++++ dependencies ++++
+// ------------------------------------------------------
+
+dependencies {
+
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter', version: '1.5.8.RELEASE'
+    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '1.5.8.RELEASE'
+
+    compile group: 'io.netty', name: 'netty-all', version: '4.1.17.Final'
+    compile group: 'org.projectlombok', name: 'lombok', version: '1.16.18'
+
+	compile group: 'commons-cli', name: 'commons-cli', version: '1.2'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
+    compile group: 'commons-io', name: 'commons-io', version: '2.6'
+
+    compile group: 'javax.inject', name: 'javax.inject', version: '1'
+    compile group: 'com.google.guava', name: 'guava', version: '23.0'
+    compile group: 'joda-time', name: 'joda-time', version: '2.9.9'
+    compile group: 'org.jodd', name: 'jodd-core', version: '3.9.1'
+}
+
+// ------------------------------------------------------
+// ++++ gradle ... ++++
+// ------------------------------------------------------
+
+jar {
+    group = project.group
+    baseName = project.name
+    version = project.version
+    from("$project.rootDir/pom.xml") {
+        into("META-INF/maven/$project.group/$project.name")
+    }
+    manifest {
+        attributes 'Implementation-Title': project.name,
+                'Implementation-Version': project.version,
+                'Implementation-Vendor': 'http://zany.kr',
+                'Built-By': System.getProperty('user.name'),
+                'Built-Date': new Date(),
+                'Build-Jdk': System.getProperty('java.version'),
+                'Created-By': 'gradle v' + gradle.gradleVersion
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        name 'snapshot'
+        url deploySnapshotUrl
+    }
+    maven {
+        name 'release'
+        url deployReleaseUrl
+    }
+}
