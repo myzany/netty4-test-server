@@ -48,8 +48,10 @@ jar {
     group = project.group
     baseName = project.name
     version = project.version
-    from("$project.rootDir/pom.xml") {
-        into("META-INF/maven/$project.group/$project.name")
+    [ "$project.rootDir/pom.xml" ].each { file ->
+        from(file) {
+            into("META-INF/maven/$project.group/$project.name")
+        }
     }
     manifest {
         attributes 'Implementation-Title': project.name,
@@ -60,16 +62,21 @@ jar {
                 'Build-Jdk': System.getProperty('java.version'),
                 'Created-By': 'gradle v' + gradle.gradleVersion
     }
+    exclude("config/**")
 }
 
 repositories {
-    mavenCentral()
+    //mavenCentral()
     maven {
-        name 'snapshot'
-        url deploySnapshotUrl
+        url repoGroupUrl
     }
-    maven {
-        name 'release'
-        url deployReleaseUrl
-    }
+}
+
+
+// ------------------------------------------------------
+// ++++ tasks ++++
+// ------------------------------------------------------
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.0'
 }
