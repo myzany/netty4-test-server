@@ -1,3 +1,18 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url repoGroupUrl }
+        maven { url 'https://repo.spring.io/libs-snapshot' }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.9.RELEASE")
+    }
+}
+
+plugins {
+    id 'org.springframework.boot' version '1.5.9.RELEASE'
+}
+
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
@@ -15,25 +30,14 @@ repositories {
     maven { url 'https://repo.spring.io/libs-snapshot' }
 }
 
-buildscript {
-	repositories {
-        mavenCentral()
-        maven { url repoGroupUrl }
-        maven { url 'https://repo.spring.io/libs-snapshot' }
-    }
-	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:$springbootVersion")
-	}
-}
-
 // ------------------------------------------------------
 // ++++ dependencies ++++
 // ------------------------------------------------------
 
 dependencies {
 
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter', version: springbootVersion
-    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: springbootVersion
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter'
+    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
 
     compile group: 'io.netty', name: 'netty-all', version: '4.1.17.Final'
     compile group: 'org.projectlombok', name: 'lombok', version: '1.16.18'
