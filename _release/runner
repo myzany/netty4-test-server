@@ -15,8 +15,8 @@ BASESYS="$(uname -srv)"
 APP_NAME="netty4-test-server"
 APP_DESC="Netty4 Test Server"
 
-APP_CONF="$BASEDIR/res/config/application.yml"
-LOG_CONF="$BASEDIR/res/config/logback-deploy.xml"
+APP_CONF="$BASEDIR/config/application.yml"
+LOG_CONF="$BASEDIR/config/logback-deploy.xml"
 LOG_FILE="$BASEDIR/log/$APP_NAME.log"
 
 CMD_JAVA="$JAVA_HOME/bin/java"

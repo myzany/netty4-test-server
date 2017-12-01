@@ -21,7 +21,6 @@ fi
 
 REL=$PRG/_release
 LIB=$REL/lib
-RES=$REL/res
 
 if [ ! -d $LIB ]; then
   mkdir -p $LIB
@@ -32,4 +31,4 @@ if [ ! -d $RES ]; then
 fi
 
 \cp -R $PRG/build/libs/*.jar $LIB
-\cp -R $PRG/build/resources/main/* $RES
+\cp -R $PRG/build/resources/main/* $REL
