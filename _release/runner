@@ -9,72 +9,45 @@
 # Copyright(c) 2015 kt corp. All rights reserved.
 # -----------------------------------------------------------------------------
 
-CURRDIR="$(pwd)"
-BASEDIR="$(dirname $0)"
+BASEDIR=`cd $(dirname $0); pwd`
 BASESYS="$(uname -srv)"
 
 APP_NAME="netty4-test-server"
 APP_DESC="Netty4 Test Server"
 
-CONF_FILE="$BASEDIR/config/application.yml"
-
-LOG_CONF="$BASEDIR/config/logback-deploy.xml"
+APP_CONF="$BASEDIR/res/config/application.yml"
+LOG_CONF="$BASEDIR/res/config/logback-deploy.xml"
 LOG_FILE="$BASEDIR/log/$APP_NAME.log"
 
 CMD_JAVA="$JAVA_HOME/bin/java"
 
 CMD_VM_OPTIONS="-Xms512m -Xmx1024m -XX:PermSize=256m -XX:MaxPermSize=512m -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -Djava.security.egd=file:///dev/urandom"
-CMD_EXEC_ARGS="--spring.config.location=$CONF_FILE --logging.config=$LOG_CONF --logging.file=$LOG_FILE"
+CMD_EXEC_ARGS="--spring.config.location=$APP_CONF --logging.config=$LOG_CONF --logging.file=$LOG_FILE"
 CMD_USER_ARGS="-Dfile.encoding=UTF-8 -Djava.net.preferIPv4Stack=true"
 
-CMD_EXEC_JAR="$BASEDIR/lib/$APP_NAME-*-provided.jar"
-
-isExistDir() {
-
-    if [ ! -d $1 ]; then
-		return 1;
-	else
-		return 0;
-    fi
-}
-
-isExistFile() {
-
-    if [ ! -f $1 ]; then
-		return 1;
-	else
-		return 0;
-    fi
-}
+JAR_FILE="$BASEDIR/lib/$APP_NAME-*.jar"
 
 printf "\n$BASESYS"
 printf "\n"
 
-if [ "$BASEDIR" != "." ]; then
-    printf "\nPlease run this script at it's own directory."
-    printf "\n"
-    exit 1
+if [ "$BASEDIR" != `pwd` ]; then
+  printf "\nPlease run this script at it's own directory."
+  printf "\n"
+  exit 1
 fi
 
-if ( ! isExistDir $BASEDIR ); then
-	printf "\n'$BASEDIR' directory is not exist."
-	exit 1
+if [ ! -d $BASEDIR/tmp ]; then
+  mkdir -p $BASEDIR/tmp
 fi
 
-if ( ! isExistDir $BASEDIR/tmp ); then
-	mkdir -p $BASEDIR/tmp
+if [ ! -d $BASEDIR/log ]; then
+  mkdir -p $BASEDIR/log
 fi
 
-if ( ! isExistDir $BASEDIR/log ); then
-	mkdir -p $BASEDIR/log
-fi
-
-if ( isExistFile $CMD_EXEC_JAR ); then
-
-	$CMD_JAVA -jar $CMD_EXEC_JAR $@ $CMD_VM_OPTIONS $CMD_EXEC_ARGS $CMD_USER_ARGS
-
+if [ -f $JAR_FILE ]; then
+  $CMD_JAVA -jar $JAR_FILE $@ $CMD_VM_OPTIONS $CMD_EXEC_ARGS $CMD_USER_ARGS
 else
-	printf "\nExecutable jar file is not exist. ($CMD_EXEC_JAR)"
+  printf "\nExecutable jar file does not exist. ($JAR_FILE)"
 fi
 
 printf "\n"
