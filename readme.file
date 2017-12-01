@@ -19,7 +19,8 @@ https://docs.gradle.org/current/userguide/project_reports_plugin.html
 gradle --console=plain clean projectReport
 
 ● 의존성 트리 보기 (project report 에도 나옴)
-gradle clean dependencies --configuration runtime
+gradle dependencies --configuration compile
+gradle dependencies --configuration runtime
 
 -----------------------------------------------
 ● jvm arguments

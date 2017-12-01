@@ -16,7 +16,7 @@ if [ "$PRG" != `pwd` ]; then
   exit 1
 fi
 
-./gradlew clean build
+./gradlew clean build -x test
 
 
 REL=$PRG/_release
